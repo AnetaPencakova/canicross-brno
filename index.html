@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canicross Brno - Aneta, Enola &amp; Misty</title>
+<meta name="description" content="Canicross v Brně a okolí pro začátečníky i pokročilé. Běh se psem, tréninky, rezervace a spolupráce.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest: #3f5d3a;
+    --forest-dark: #2c4228;
+    --moss: #6b8f5e;
+    --bark: #8b6f47;
+    --terracotta: #c17f4e;
+    --cream: #f6f1e7;
+    --cream-dark: #ece3d2;
+    --ink: #2e2a22;
+    --white: #fffdf8;
+    color-scheme: light;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Manrope', sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.65;
+  }
+  h1,h2,h3,.logo{font-family:'Outfit', sans-serif;font-weight:600;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* Header */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,241,231,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--cream-dark);
+  }
+  nav.wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{font-size:1.4rem;font-weight:700;color:var(--forest-dark);text-decoration:none;}
+  .logo span{color:var(--terracotta);}
+  .navlinks{display:flex;gap:28px;list-style:none;margin:0;padding:0;}
+  .navlinks a{text-decoration:none;font-weight:600;font-size:0.95rem;color:var(--forest-dark);}
+  .navlinks a:hover{color:var(--terracotta);}
+  .menu-btn{display:none;background:none;border:none;font-size:1.6rem;color:var(--forest-dark);cursor:pointer;}
+  @media(max-width:760px){
+    .navlinks{
+      position:fixed;top:64px;left:0;right:0;
+      background:var(--white);
+      flex-direction:column;
+      padding:20px 24px;
+      gap:16px;
+      transform:translateY(-130%);
+      transition:transform .25s ease;
+      border-bottom:1px solid var(--cream-dark);
+    }
+    .navlinks.open{transform:translateY(0);}
+    .menu-btn{display:block;}
+  }
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(160deg, var(--forest) 0%, var(--forest-dark) 100%);
+    color:var(--cream);
+    padding:90px 0 100px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;inset:auto 0 0 0;height:60px;
+    background:var(--cream);
+    border-radius:50% 50% 0 0 / 100% 100% 0 0;
+    transform:scale(1.4);
+  }
+  .hero .wrap{position:relative;z-index:2;text-align:center;}
+  .hero h1{font-size:clamp(2rem,5vw,3.2rem);margin:0 0 18px;font-weight:600;}
+  .hero p{font-size:1.15rem;max-width:560px;margin:0 auto 34px;color:#e4ead9;}
+  .btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;padding:14px 28px;border-radius:40px;
+    font-weight:700;text-decoration:none;font-size:0.98rem;
+    transition:transform .15s ease, box-shadow .15s ease;
+    border:2px solid transparent;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--terracotta);color:var(--white);}
+  .btn-primary:hover{box-shadow:0 8px 20px rgba(193,127,78,.4);}
+  .btn-outline{border-color:var(--cream);color:var(--cream);}
+  .btn-outline:hover{background:rgba(255,255,255,.08);}
+
+  section{padding:80px 0;}
+  .section-title{text-align:center;margin-bottom:12px;font-size:clamp(1.6rem,3.5vw,2.2rem);color:var(--forest-dark);}
+  .section-lead{text-align:center;max-width:620px;margin:0 auto 48px;color:#5c5648;font-size:1.05rem;}
+  .tag{
+    display:inline-block;background:var(--moss);color:var(--white);
+    padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;
+    letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px;
+  }
+
+  /* O nás */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  @media(max-width:760px){.about{grid-template-columns:1fr;}}
+  .about-art{
+    aspect-ratio:1/1;border-radius:24px;overflow:hidden;
+    background:linear-gradient(135deg, var(--moss), var(--forest));
+    display:flex;align-items:center;justify-content:center;
+  }
+  .about-art img{width:100%;height:100%;object-fit:cover;display:block;}
+  .about h2{margin-top:0;color:var(--forest-dark);}
+  .about ul{padding-left:20px;margin:20px 0;}
+  .about li{margin-bottom:8px;}
+
+  /* Tréninky */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;}
+  .card{
+    background:var(--white);border-radius:18px;padding:32px 28px;
+    box-shadow:0 6px 24px rgba(63,93,58,.08);
+  }
+  .card h3{margin-top:0;color:var(--forest-dark);}
+  .card-icon{
+    width:52px;height:52px;border-radius:14px;background:var(--cream-dark);
+    display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:1.5rem;
+  }
+  .location-note{
+    margin-top:40px;background:var(--cream-dark);border-radius:18px;
+    padding:26px 30px;text-align:center;color:var(--forest-dark);font-weight:600;
+  }
+
+  /* Galerie */
+  .gallery{
+    display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:10px;-webkit-overflow-scrolling:touch;
+  }
+  .gallery-item{
+    position:relative;overflow:hidden;flex:0 0 auto;
+    width:min(78vw,320px);aspect-ratio:4/3;border-radius:16px;
+    scroll-snap-align:start;
+  }
+  .gallery-item img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+
+  /* Rezervace */
+  .reserve{background:var(--forest-dark);color:var(--cream);border-radius:28px;padding:56px;display:grid;grid-template-columns:1fr;gap:24px;max-width:640px;margin:0 auto;}
+  @media(max-width:760px){.reserve{padding:36px 24px;}}
+  .reserve h2{color:var(--white);margin-top:0;}
+  .reserve p{color:#d9e2cf;}
+  .reserve-list{list-style:none;padding:0;margin:24px 0 0;}
+  .reserve-list li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.12);}
+  form{display:flex;flex-direction:column;gap:14px;}
+  label{font-size:0.85rem;font-weight:700;color:#d9e2cf;}
+  input,textarea,select{
+    width:100%;padding:12px 14px;border-radius:10px;border:none;
+    font-family:inherit;font-size:0.95rem;background:var(--cream);color:var(--ink);
+  }
+  textarea{resize:vertical;min-height:90px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:480px){.form-row{grid-template-columns:1fr;}}
+  .form-note{font-size:0.8rem;color:#b9c6ab;margin-top:-4px;}
+  #formStatus{font-size:0.9rem;font-weight:700;min-height:1.2em;}
+
+  /* Typ rezervace přepínač */
+  .type-toggle{display:flex;gap:10px;}
+  .type-toggle label{
+    flex:1;text-align:center;padding:10px 12px;border-radius:10px;
+    background:rgba(255,255,255,.08);cursor:pointer;font-weight:700;font-size:0.88rem;
+    border:2px solid transparent;color:#d9e2cf;transition:all .15s ease;
+  }
+  .type-toggle label.selected{background:var(--cream);border-color:var(--terracotta);color:var(--forest-dark);}
+  .type-toggle input{position:absolute;opacity:0;width:0;height:0;}
+  .group-only{display:none;}
+  .group-only.active{display:grid;}
+  p.group-only.active,
+  .qr-box.group-only.active{display:block;}
+
+  /* Souhlasy a právní texty */
+  .checkbox-row{display:flex;align-items:flex-start;gap:10px;font-size:0.85rem;color:#d9e2cf;font-weight:400;}
+  .checkbox-row input{width:auto;margin:3px 0 0;flex-shrink:0;}
+  details.legal{background:rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;}
+  details.legal summary{cursor:pointer;font-weight:700;font-size:0.82rem;color:#e4ead9;}
+  details.legal p{font-size:0.8rem;color:#c7d4ba;margin:10px 0 0;line-height:1.55;}
+  .payment-note{font-size:0.8rem;color:#b9c6ab;}
+
+  /* Spolupráce / kontakt */
+  .collab{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center;}
+  @media(max-width:760px){.collab{grid-template-columns:1fr;}}
+  .collab h2{color:var(--forest-dark);margin-top:0;}
+  .qr-box{
+    background:var(--white);border-radius:20px;padding:28px;text-align:center;
+    box-shadow:0 6px 24px rgba(63,93,58,.1);
+  }
+  .qr-box img{margin:0 auto 14px;border-radius:12px;}
+  .qr-box p{font-size:0.85rem;color:#5c5648;margin:0;}
+  .contact-list{list-style:none;padding:0;margin:20px 0 0;}
+  .contact-list li{margin-bottom:10px;font-weight:600;}
+  .contact-list a{color:var(--forest);text-decoration:none;}
+  .contact-list a:hover{text-decoration:underline;}
+
+  footer{
+    background:var(--forest-dark);color:#cdd8c2;text-align:center;
+    padding:32px 24px;font-size:0.9rem;
+  }
+  footer a{color:var(--cream);}
+
+  .edit-hint{
+    background:#fff3cd;border:1px dashed #c9a24b;color:#6b5420 !important;
+    border-radius:10px;padding:10px 14px;font-size:0.78rem;margin-top:10px;
+  }
+  .cta-box{
+    background:var(--white);border-radius:20px;padding:28px;text-align:center;
+    box-shadow:0 6px 24px rgba(63,93,58,.08);
+  }
+  .cta-box p{margin-top:0;color:#5c5648;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="#home" class="logo">Canicross <span>Brno</span></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+    <ul class="navlinks" id="navLinks">
+      <li><a href="#about">O nás</a></li>
+      <li><a href="#training">Tréninky</a></li>
+      <li><a href="#group-training">Skupinové</a></li>
+      <li><a href="#gallery">Galerie</a></li>
+      <li><a href="#reserve">Rezervace</a></li>
+      <li><a href="#collab">Spolupráce</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="wrap">
+    <span class="tag">Brno a okolí</span>
+    <h1>Canicross: běh, který vás s vaším psem spojí ještě víc</h1>
+    <p>Jmenuju se Aneta a canicross trénuju se svými fenkami Enolou a Misty. Pojďte běhat s námi - ať začínáte, nebo se chystáte na svůj první závod.</p>
+    <div class="btn-row">
+      <a href="#reserve" class="btn btn-primary">Rezervovat trénink</a>
+      <a href="#about" class="btn btn-outline">Náš příběh</a>
+    </div>
+  </div>
+</section>
+
+<section id="why" style="padding-top:48px;padding-bottom:48px;">
+  <div class="wrap">
+    <h2 class="section-title">Proč trénovat právě se mnou</h2>
+    <p class="section-lead">Nejsem jen nadšenec se psem na vodítku - roky vlastního tréninku a závodění umím přenést i do vašich běhů.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🏅</div>
+        <h3>Praxí, ne teorií</h3>
+        <p>Přes 7 let běhám a s Enolou a Misty trénujeme canicross už 3,5 roku.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h3>Ráda poradím</h3>
+        <p>Zeptejte se na cokoliv k výstroji, technice nebo běhu se psem a ráda se podělím o to, co vím.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Canicross i sólo běh</h3>
+        <p>Ať běháte se psem, nebo sami, ráda se s vámi podívám na to, co vás posune dál.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <div>
+      <span class="tag">O nás</span>
+      <h2>Aneta, Enola &amp; Misty</h2>
+      <p>Běhu se věnuji zhruba 7 let a canicross spolu s Enolou a Misty trénujeme přibližně 3,5 roku. Je to způsob, jak propojit vytrvalostní běh s časem stráveným se psy. Místo toho, aby na mě čekaly doma, jdeme běhat spolu.</p>
+      <p>Sama se připravuji na vlastní běžecké cíle a ráda se o zkušenosti s tréninkem, technikou i výstrojí podělím s dalšími, kteří chtějí buď začít, nebo se jen zlepšit.</p>
+      <ul>
+        <li>Canicross trénujeme pravidelně v okolí Brna</li>
+        <li>Vedu začátečníky i zkušenější běžce se psem</li>
+        <li>Kladu důraz na bezpečnost psa i bezpečnou techniku běhu</li>
+      </ul>
+    </div>
+    <div class="about-art">
+      <img src="galerie/about-photo.jpg" alt="Aneta s Enolou a Misty v horách" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section id="training" style="background:var(--cream-dark);">
+  <div class="wrap">
+    <span class="tag" style="display:block;text-align:center;width:fit-content;margin:0 auto 14px;">Tréninky</span>
+    <h2 class="section-title">Trénujeme v okolí Brna</h2>
+    <p class="section-lead">Konkrétní trasy a termíny domlouváme individuálně podle počasí a vašich možností - napište si o aktuální nabídku přes rezervační formulář níže.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🌱</div>
+        <h3>Pro začátečníky</h3>
+        <p>Základy canicrossu: výběr postroje a vodítka s tlumičem, povely, bezpečný start a postupné budování tempa. Ideální, pokud canicross teprve zkoušíte.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏃</div>
+        <h3>Pro pokročilé</h3>
+        <p>Práce na tempu a technice, příprava na závody, delší trasy v terénu. Vhodné, pokud už canicross znáte a chcete se posunout dál.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🐕</div>
+        <h3>Individuální přístup</h3>
+        <p>Trénink přizpůsobíme vám i vašemu psovi - jeho plemeni, kondici a zkušenostem. Tréninky 1:1.</p>
+      </div>
+    </div>
+    <div class="location-note">📍 Trénujeme v okolí Brna na lesních cestách a loukách na okraji města.</div>
+  </div>
+</section>
+
+<section id="group-training">
+  <div class="wrap">
+    <span class="tag" style="display:block;text-align:center;width:fit-content;margin:0 auto 14px;background:var(--terracotta);">Skupinové tréninky</span>
+    <h2 class="section-title">Běhejte společně ve skupině</h2>
+    <p class="section-lead">Skupina 6-10 lidí, cena 250 Kč / osoba. Termín se potvrdí, jakmile se přihlásí alespoň 3 zájemci - podmínkou účasti je platné očkování psa.</p>
+    <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:40px;">
+      <div class="card">
+        <div class="card-icon">👥</div>
+        <h3>Kapacita</h3>
+        <p>6-10 lidí na termín. Trénink se koná od 3 potvrzených přihlášek.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💳</div>
+        <h3>Cena</h3>
+        <p>250 Kč / osoba. Platba hotově na místě, nebo QR kódem - najdeš ho u rezervačního formuláře.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💉</div>
+        <h3>Podmínka</h3>
+        <p>Platné očkování psa. Jinak nejsou žádné další požadavky.</p>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <p>Přihlášení na konkrétní termín probíhá přes rezervační formulář níže - zvol tam „Skupinový trénink“ a vyber datum. Jakmile se na termín přihlásí alespoň 3 lidé, přijde všem přihlášeným automaticky potvrzovací e-mail.</p>
+      <a href="#reserve" class="btn btn-primary">Přejít na rezervaci</a>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <span class="tag" style="display:block;text-align:center;width:fit-content;margin:0 auto 14px;">Galerie</span>
+    <h2 class="section-title">Z našich tréninků, závodů a každodenního života</h2>
+    <div class="gallery">
+      <div class="gallery-item"><img src="galerie/gallery-3.jpg" alt="Enola a Misty v postrojích" loading="lazy"></div>
+      <div class="gallery-item"><img src="galerie/gallery-1.jpg" alt="Ranní trénink v lese" loading="lazy"></div>
+      <div class="gallery-item"><img src="galerie/gallery-4.jpg" alt="Enola a Misty v akci" loading="lazy"></div>
+      <div class="gallery-item"><img src="galerie/gallery-2.jpg" alt="Příprava na závod" loading="lazy"></div>
+      <div class="gallery-item"><img src="galerie/gallery-5.jpg" alt="Trasa kolem Brna" loading="lazy" style="object-position:center 85%;"></div>
+      <div class="gallery-item"><img src="galerie/gallery-6.jpg" alt="Po tréninku společně" loading="lazy" style="object-position:center 40%;"></div>
+    </div>
+  </div>
+</section>
+
+<section id="reserve">
+  <div class="wrap">
+    <div class="reserve">
+      <div>
+        <span class="tag" style="background:var(--terracotta);">Rezervace</span>
+        <h2>Zarezervuj si trénink</h2>
+        <p>Vyber typ tréninku, vyplň pár informací o sobě a svém psovi a odešli. U skupinových tréninků přijde potvrzení automaticky, jakmile se na termín přihlásí alespoň 3 lidé.</p>
+        <ul class="reserve-list">
+          <li>Individuální: odpovídám obvykle do 2-3 dnů</li>
+          <li>Skupinové: potvrzení ihned po dosažení 3 přihlášených</li>
+          <li>Platba hotově, nebo QR kódem na webu</li>
+        </ul>
+      </div>
+      <div>
+        <form id="reserveForm">
+          <div class="type-toggle">
+            <label id="labelIndividual" class="selected">
+              <input type="radio" name="type" id="typeIndividual" value="individualni" checked>
+              Individuální trénink
+            </label>
+            <label id="labelGroup">
+              <input type="radio" name="type" id="typeGroup" value="skupinovy">
+              Skupinový trénink
+            </label>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label for="name">Jméno a příjmení</label>
+              <input type="text" id="name" required>
+            </div>
+            <div>
+              <label for="email">E-mail</label>
+              <input type="email" id="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label for="phone">Telefon</label>
+              <input type="tel" id="phone" required>
+            </div>
+            <div>
+              <label for="dog">Jméno a plemeno psa</label>
+              <input type="text" id="dog" required>
+            </div>
+          </div>
+
+          <div class="form-row group-only" id="groupDateRow">
+            <div>
+              <label for="groupDate">Vyber termín skupinového tréninku</label>
+              <select id="groupDate"></select>
+            </div>
+            <div>
+              <label for="payment">Způsob platby (250 Kč/osoba)</label>
+              <select id="payment">
+                <option value="hotove">Hotově na místě</option>
+                <option value="qr">QR kódem (viz níže)</option>
+              </select>
+            </div>
+          </div>
+
+          <p class="payment-note group-only" id="paymentNote">U skupinových tréninků (250 Kč/osoba) se platí buď hotově na místě, nebo QR kódem níže - online platební brána není potřeba.</p>
+
+          <div class="qr-box group-only" id="paymentQrBox">
+            <img src="platebni-qr.jpg" width="160" height="160" alt="QR kód pro platbu 250 Kč za skupinový trénink">
+            <p>Naskenuj v bankovní aplikaci a zaplať 250 Kč za skupinový trénink.</p>
+          </div>
+
+          <div class="form-row" id="individualRow">
+            <div>
+              <label for="level">Zkušenost s canicrossem</label>
+              <input type="text" id="level" placeholder="Např. začátečník">
+            </div>
+            <div>
+              <label for="date">Preferovaný termín</label>
+              <input type="text" id="date" placeholder="Např. úterý odpoledne">
+            </div>
+          </div>
+
+          <div>
+            <label for="message">Zpráva (nepovinné)</label>
+            <textarea id="message"></textarea>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="vaccineConfirm" required>
+            Potvrzuji, že můj pes je řádně očkovaný a v dobrém zdravotním stavu.
+          </label>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="gdprConsent" required>
+            Souhlasím se zpracováním osobních údajů pro účely vyřízení rezervace.
+          </label>
+          <details class="legal">
+            <summary>Zobrazit celý text souhlasu (GDPR)</summary>
+            <p>Odesláním formuláře souhlasíte, že Aneta Pěnčáková jako správce zpracuje vámi vyplněné údaje (jméno, e-mail, telefon, údaje o psovi) za účelem vyřízení rezervace tréninku a komunikace s vámi. Údaje nejsou předávány třetím stranám mimo rozsah nutný k zajištění tréninku. Jsou uchovávány po dobu 1 roku od konání tréninku a poté smazány. Máte právo na přístup ke svým údajům, jejich opravu nebo výmaz - napište na <a href="mailto:apencakova28@gmail.com" style="color:var(--cream);">apencakova28@gmail.com</a>.</p>
+          </details>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="waiverConsent" required>
+            Beru na vědomí rizika spojená s canicrossem a účastním se na vlastní odpovědnost.
+          </label>
+          <details class="legal">
+            <summary>Zobrazit celý text prohlášení o odpovědnosti</summary>
+            <p>Beru na vědomí, že canicross je fyzicky náročná aktivita spojená s pohybem v terénu za účasti psa a že s sebou nese riziko úrazu (např. pádu, zranění psem nebo jiným účastníkem). Účastním se na vlastní odpovědnost a potvrzuji, že můj pes je v dobrém zdravotním stavu a řádně očkovaný. Pořadatelka nenese odpovědnost za škody vzniklé v důsledku nedodržení jejích pokynů nebo za újmu způsobenou vlastním psem účastníka.</p>
+          </details>
+
+          <button type="submit" class="btn btn-primary">Odeslat rezervaci</button>
+          <p id="formStatus"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="collab" style="background:var(--cream-dark);">
+  <div class="wrap collab">
+    <div>
+      <span class="tag">Spolupráce</span>
+      <h2>Otevřená spolupráci se značkami i komunitou</h2>
+      <p>Ráda spolupracuji s výrobci vybavení, veterinárními či výživovými značkami a dalšími nadšenci do canicrossu - těším se na jakékoliv nabídky.</p>
+      <ul class="contact-list">
+        <li>📧 <a href="mailto:apencakova28@gmail.com">apencakova28@gmail.com</a></li>
+        <li>📍 Brno a okolí</li>
+        <li>📷 <a href="https://www.instagram.com/pencakovaaneta/" target="_blank" rel="noopener">@pencakovaaneta</a></li>
+      </ul>
+    </div>
+    <div class="qr-box">
+      <img src="kontakt-qr.png" width="220" height="220" alt="QR kód pro rychlý kontakt e-mailem">
+      <p>Naskenuj a napiš mi rovnou e-mail.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© <span id="year"></span> Canicross Brno - Aneta, Enola &amp; Misty. Vytvořeno s láskou k běhu a ke psům.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // ===== REZERVAČNÍ SYSTÉM =====
+
+  // 1) Sem vlož URL nasazené Google Apps Script webové aplikace (viz návod k nastavení).
+  //    Dokud tu zůstane placeholder, formulář automaticky použije záložní odeslání e-mailem.
+  const RESERVATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwnmKgvhbdOkzmpxUMy68fgIiDmmzLKGwGY-XjviUVvkeHh0MQlHkQT63YSXRVTjP7F/exec';
+
+  // 2) Sem si přidávej/uprav nabízené termíny skupinových tréninků.
+  //    Formát: { label: 'text v nabídce', value: 'datum' }
+  const GROUP_DATES = [
+    { label: 'So 21. 11. 2026, 8:30 - Biotop Chrlice', value: '2026-11-21' },
+    { label: 'So 28. 11. 2026, 8:30 - Biotop Chrlice', value: '2026-11-28' },
+    { label: 'So 5. 12. 2026, 8:30 - Biotop Chrlice',  value: '2026-12-05' }
+  ];
+
+  const groupDateSelect = document.getElementById('groupDate');
+  GROUP_DATES.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d.value;
+    opt.textContent = d.label;
+    groupDateSelect.appendChild(opt);
+  });
+
+  const labelIndividual = document.getElementById('labelIndividual');
+  const labelGroup = document.getElementById('labelGroup');
+  const typeIndividual = document.getElementById('typeIndividual');
+  const typeGroup = document.getElementById('typeGroup');
+  const groupDateRow = document.getElementById('groupDateRow');
+  const individualRow = document.getElementById('individualRow');
+  const paymentNote = document.getElementById('paymentNote');
+  const paymentQrBox = document.getElementById('paymentQrBox');
+
+  function updateFormType(){
+    const isGroup = typeGroup.checked;
+    labelIndividual.classList.toggle('selected', !isGroup);
+    labelGroup.classList.toggle('selected', isGroup);
+    groupDateRow.classList.toggle('active', isGroup);
+    paymentNote.classList.toggle('active', isGroup);
+    paymentQrBox.classList.toggle('active', isGroup);
+    individualRow.style.display = isGroup ? 'none' : 'grid';
+    groupDateSelect.required = isGroup;
+  }
+  typeIndividual.addEventListener('change', updateFormType);
+  typeGroup.addEventListener('change', updateFormType);
+  updateFormType();
+
+  document.getElementById('reserveForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const statusEl = document.getElementById('formStatus');
+    const isGroup = typeGroup.checked;
+
+    const data = {
+      type: isGroup ? 'skupinovy' : 'individualni',
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      dog: document.getElementById('dog').value,
+      level: isGroup ? '' : document.getElementById('level').value,
+      preferredDate: isGroup ? document.getElementById('groupDate').value : document.getElementById('date').value,
+      payment: isGroup ? document.getElementById('payment').value : '',
+      message: document.getElementById('message').value,
+      vaccineConfirm: document.getElementById('vaccineConfirm').checked,
+      gdprConsent: document.getElementById('gdprConsent').checked,
+      waiverConsent: document.getElementById('waiverConsent').checked,
+      submittedAt: new Date().toISOString()
+    };
+
+    function sendByMail(){
+      const subject = encodeURIComponent(
+        (isGroup ? 'Rezervace skupinového tréninku' : 'Poptávka individuálního tréninku') + ' - canicross (' + data.name + ')'
+      );
+      const body = encodeURIComponent(
+        'Typ: ' + data.type + '\n' +
+        'Jméno: ' + data.name + '\n' +
+        'E-mail: ' + data.email + '\n' +
+        'Telefon: ' + data.phone + '\n' +
+        'Pes: ' + data.dog + '\n' +
+        (isGroup
+          ? 'Termín: ' + data.preferredDate + '\nPlatba: ' + data.payment + '\n'
+          : 'Zkušenost: ' + data.level + '\nPreferovaný termín: ' + data.preferredDate + '\n') +
+        'Očkování potvrzeno: ' + (data.vaccineConfirm ? 'ano' : 'ne') + '\n' +
+        'GDPR souhlas: ' + (data.gdprConsent ? 'ano' : 'ne') + '\n' +
+        'Souhlas s odpovědností: ' + (data.waiverConsent ? 'ano' : 'ne') + '\n\n' +
+        'Zpráva:\n' + data.message
+      );
+      window.location.href = 'mailto:apencakova28@gmail.com?subject=' + subject + '&body=' + body;
+      statusEl.textContent = 'Otevírám e-mailovou aplikaci s předvyplněnou zprávou…';
+    }
+
+    if (!RESERVATION_ENDPOINT || RESERVATION_ENDPOINT.indexOf('VLOZ_SEM') === 0) {
+      sendByMail();
+      return;
+    }
+
+    statusEl.textContent = 'Odesílám rezervaci…';
+    fetch(RESERVATION_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(data)
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('network');
+      statusEl.textContent = isGroup
+        ? 'Rezervace přijata! Jakmile se naplní minimální počet 3 lidí, přijde ti potvrzovací e-mail.'
+        : 'Rezervace přijata! Ozvu se ti do 2-3 dnů.';
+      document.getElementById('reserveForm').reset();
+      updateFormType();
+    })
+    .catch(() => sendByMail());
+  });
+</script>
+
+</body>
+</html>
